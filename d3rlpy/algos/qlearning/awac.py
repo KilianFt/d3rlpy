@@ -84,7 +84,7 @@ class AWACConfig(LearnableConfig):
     lam: float = 1.0
     n_action_samples: int = 1
     n_critics: int = 2
-    final_activation_function = None
+    final_activation_function: str = None
 
     def create(self, device: DeviceArg = False) -> "AWAC":
         return AWAC(self, device)

@@ -106,7 +106,7 @@ class NormalPolicy(Policy):
         min_logstd: float,
         max_logstd: float,
         use_std_parameter: bool,
-        final_activation_function = None,
+        final_activation_function: str = None,
     ):
         super().__init__()
         self._action_size = action_size
@@ -116,7 +116,10 @@ class NormalPolicy(Policy):
         self._use_std_parameter = use_std_parameter
         self._mu = nn.Linear(hidden_size, action_size)
         # enable final activation function
-        self._final_act = final_activation_function
+        if final_activation_function is not None:
+            assert final_activation_function == 'sigmoid', 'Only sigmoid implemented'
+            self._final_act = nn.Sigmoid()
+
         if use_std_parameter:
             initial_logstd = torch.zeros(1, action_size, dtype=torch.float32)
             self._logstd = nn.Parameter(initial_logstd)

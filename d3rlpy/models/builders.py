@@ -165,7 +165,7 @@ def create_normal_policy(
     min_logstd: float = -20.0,
     max_logstd: float = 2.0,
     use_std_parameter: bool = False,
-    final_activation_function = None
+    final_activation_function: str = None
 ) -> NormalPolicy:
     encoder = encoder_factory.create(observation_shape)
     hidden_size = compute_output_size([observation_shape], encoder)
