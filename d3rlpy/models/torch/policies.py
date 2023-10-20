@@ -106,6 +106,7 @@ class NormalPolicy(Policy):
         min_logstd: float,
         max_logstd: float,
         use_std_parameter: bool,
+        final_activation_function = None,
     ):
         super().__init__()
         self._action_size = action_size
@@ -114,6 +115,8 @@ class NormalPolicy(Policy):
         self._max_logstd = max_logstd
         self._use_std_parameter = use_std_parameter
         self._mu = nn.Linear(hidden_size, action_size)
+        # enable final activation function
+        self._final_act = final_activation_function
         if use_std_parameter:
             initial_logstd = torch.zeros(1, action_size, dtype=torch.float32)
             self._logstd = nn.Parameter(initial_logstd)
@@ -123,6 +126,8 @@ class NormalPolicy(Policy):
     def forward(self, x: torch.Tensor, *args: Any) -> ActionOutput:
         h = self._encoder(x)
         mu = self._mu(h)
+        if self._final_act is not None:
+            mu = self._final_act(mu)
 
         if self._use_std_parameter:
             assert isinstance(self._logstd, nn.Parameter)

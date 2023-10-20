@@ -84,6 +84,7 @@ class AWACConfig(LearnableConfig):
     lam: float = 1.0
     n_action_samples: int = 1
     n_critics: int = 2
+    final_activation_function = None
 
     def create(self, device: DeviceArg = False) -> "AWAC":
         return AWAC(self, device)
@@ -105,6 +106,7 @@ class AWAC(QLearningAlgoBase[AWACImpl, AWACConfig]):
             max_logstd=0.0,
             use_std_parameter=True,
             device=self._device,
+            final_activation_function = self._config.final_activation_function
         )
         q_funcs, q_func_forwarder = create_continuous_q_function(
             observation_shape,
