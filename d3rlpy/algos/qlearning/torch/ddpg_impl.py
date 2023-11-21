@@ -111,7 +111,8 @@ class DDPGBaseImpl(
         pass
 
     def inner_predict_best_action(self, x: torch.Tensor) -> torch.Tensor:
-        return self._modules.policy(x).squashed_mu
+        # FIXME return self._modules.policy(x).squashed_mu
+        return self._modules.policy(x).mu
 
     @abstractmethod
     def inner_sample_action(self, x: torch.Tensor) -> torch.Tensor:
