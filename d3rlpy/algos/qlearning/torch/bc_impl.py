@@ -99,7 +99,8 @@ class BCImpl(BCBaseImpl):
         self._policy_type = policy_type
 
     def inner_predict_best_action(self, x: torch.Tensor) -> torch.Tensor:
-        return self._modules.imitator(x).squashed_mu
+        # return self._modules.imitator(x).squashed_mu FIXME
+        return self._modules.imitator(x).mu
 
     def compute_loss(
         self, obs_t: torch.Tensor, act_t: torch.Tensor

@@ -119,6 +119,8 @@ class NormalPolicy(Policy):
         if final_activation_function is not None:
             assert final_activation_function == 'sigmoid', 'Only sigmoid implemented'
             self._final_act = nn.Sigmoid()
+        else:
+            self._final_act = None
 
         if use_std_parameter:
             initial_logstd = torch.zeros(1, action_size, dtype=torch.float32)

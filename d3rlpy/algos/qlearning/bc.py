@@ -55,6 +55,7 @@ class BCConfig(LearnableConfig):
     policy_type: str = "deterministic"
     optim_factory: OptimizerFactory = make_optimizer_field()
     encoder_factory: EncoderFactory = make_encoder_field()
+    final_activation_function: str = None
 
     def create(self, device: DeviceArg = False) -> "BC":
         return BC(self, device)
@@ -83,6 +84,7 @@ class BC(QLearningAlgoBase[BCBaseImpl, BCConfig]):
                 min_logstd=-4.0,
                 max_logstd=15.0,
                 device=self._device,
+                final_activation_function = self._config.final_activation_function
             )
         else:
             raise ValueError(f"invalid policy_type: {self._config.policy_type}")
