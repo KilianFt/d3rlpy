@@ -124,6 +124,7 @@ def create_deterministic_policy(
     action_size: int,
     encoder_factory: EncoderFactory,
     device: str,
+    final_activation_function: str = None
 ) -> DeterministicPolicy:
     encoder = encoder_factory.create(observation_shape)
     hidden_size = compute_output_size([observation_shape], encoder)
@@ -131,6 +132,7 @@ def create_deterministic_policy(
         encoder=encoder,
         hidden_size=hidden_size,
         action_size=action_size,
+        final_activation_function=final_activation_function,
     )
     policy.to(device)
     return policy

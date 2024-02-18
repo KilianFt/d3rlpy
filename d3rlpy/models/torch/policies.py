@@ -53,14 +53,21 @@ class DeterministicPolicy(Policy):
     _encoder: Encoder
     _fc: nn.Linear
 
-    def __init__(self, encoder: Encoder, hidden_size: int, action_size: int):
+    def __init__(self, encoder: Encoder, hidden_size: int, action_size: int, final_activation_function: str = None):
         super().__init__()
         self._encoder = encoder
         self._fc = nn.Linear(hidden_size, action_size)
+        if final_activation_function is not None:
+            assert final_activation_function == 'sigmoid', 'Only sigmoid implemented'
+            self._final_act = nn.Sigmoid()
+        else:
+            self._final_act = None
 
     def forward(self, x: torch.Tensor, *args: Any) -> ActionOutput:
         h = self._encoder(x)
         mu = self._fc(h)
+        if self._final_act is not None:
+            mu = self._final_act(mu)
         return ActionOutput(mu, torch.tanh(mu), logstd=None)
 
 

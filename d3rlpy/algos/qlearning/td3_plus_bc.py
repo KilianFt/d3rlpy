@@ -81,6 +81,7 @@ class TD3PlusBCConfig(LearnableConfig):
     target_smoothing_clip: float = 0.5
     alpha: float = 2.5
     update_actor_interval: int = 2
+    final_activation_function: str = None
 
     def create(self, device: DeviceArg = False) -> "TD3PlusBC":
         return TD3PlusBC(self, device)
@@ -99,12 +100,14 @@ class TD3PlusBC(QLearningAlgoBase[TD3PlusBCImpl, TD3PlusBCConfig]):
             action_size,
             self._config.actor_encoder_factory,
             device=self._device,
+            final_activation_function = self._config.final_activation_function
         )
         targ_policy = create_deterministic_policy(
             observation_shape,
             action_size,
             self._config.actor_encoder_factory,
             device=self._device,
+            final_activation_function = self._config.final_activation_function
         )
         q_funcs, q_func_forwarder = create_continuous_q_function(
             observation_shape,
