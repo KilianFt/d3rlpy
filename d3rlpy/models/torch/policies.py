@@ -58,8 +58,11 @@ class DeterministicPolicy(Policy):
         self._encoder = encoder
         self._fc = nn.Linear(hidden_size, action_size)
         if final_activation_function is not None:
-            assert final_activation_function == 'sigmoid', 'Only sigmoid implemented'
-            self._final_act = nn.Sigmoid()
+            assert final_activation_function in ['sigmoid', 'tanh'], 'Only sigmoid, tanh implemented'
+            if final_activation_function == 'sigmoid':
+                self._final_act = nn.Sigmoid()
+            elif final_activation_function == 'tanh':
+                self._final_act = nn.Tanh()
         else:
             self._final_act = None
 
